@@ -1,0 +1,14 @@
+stages:          # List of stages for jobs, and their order of execution
+  - deploy
+  - notify
+
+deploy-job:
+  stage: deploy
+  script:
+    -  aws --version
+    -  aws s3 cp ./ s3://jenforms
+
+notify-job:
+  stage: notify
+  script:
+    - aws sns publish --topic-arn $SNS_ARN --message "Updated JenForms' Website!"
