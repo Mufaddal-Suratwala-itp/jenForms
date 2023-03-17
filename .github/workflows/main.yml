@@ -17,5 +17,6 @@ jobs:
         aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
     - name: Copy files to S3 bucket
       run: |
-        aws sns publish --topic-arn $SNS_ARN --message "Updated JenForms' Website!"
+        aws s3 cp --recursive ./ s3://jenforms 
+        aws sns publish --topic-arn ${{ secrets.SNS_ARN }} --message "Updated JenForms' Website!"
         
