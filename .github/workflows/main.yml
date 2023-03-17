@@ -3,17 +3,18 @@ run-name: testing
 on: [push]
 jobs:
   Trial:
-    runs-on: Ubuntu-latest
+    runs-on: ubuntu-latest
+    
     steps:
-      - run: sudo apt update
-      - run: sudo apt install python3
-      - run: pip install awscli
-      - name: Configure AWS credentials
-      - uses: aws-actions/configure-aws-credentials@v1
-      - with:
-            aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-            aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-            aws-region: ${{ secrets.AWS_DEFAULT_REGION }}
-            aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
-      - run: aws --version
-      - run: aws s3 cp ./ s3://jenforms
+    - name: Checkout repository
+      uses: actions/checkout@v2
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ${{ secrets.AWS_DEFAULT_REGION }}
+        aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
+    - name: Copy files to S3 bucket
+      run: |
+        aws s3 cp ./ s3://jenforms
