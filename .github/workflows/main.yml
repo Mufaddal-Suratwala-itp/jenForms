@@ -1,14 +1,15 @@
-stages:          # List of stages for jobs, and their order of execution
-  - deploy
-  - notify
-
-deploy-job:
-  stage: deploy
-  script:
-    -  aws --version
-    -  aws s3 cp ./ s3://jenforms
-
-notify-job:
-  stage: notify
-  script:
-    - aws sns publish --topic-arn $SNS_ARN --message "Updated JenForms' Website!"
+name: GitHub Actions Demo
+run-name: ${{ github.actor }} is testing out GitHub Actions 🚀
+on: [push]
+jobs:
+  Trial:
+    runs-on: Ubuntu-latest
+    steps:
+      - run: sudo apt update
+      - run: sudo apt install python3
+      - run: pip install awscli
+      - run: aws --version
+      - run: aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID
+      - run: aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
+      - run: aws configure set region $AWS_DEFAULT_REGION
+      - run: aws s3 cp ./ s3://jenforms
